@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +17,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 	
+	static private String dirName =  "podcasts";
+	
 	public static void main (String args[]){
 	   
 	   InputStream is = null;
 	   BufferedReader br;
 	   String line = new String();
 	   List<String> urls = new ArrayList<String>();
-	  
+	   new File (dirName).mkdir();
 	   try {
 	        //change this link to that of a lecture
 		   URL url = new URL("http://www.multimedia.ethz.ch/lectures/infk/2013/spring/252-0062-00L");
@@ -89,17 +92,16 @@ public class Main {
 			System.out.println(Thread.currentThread().getName()+" is working");
 			try {
 				ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-		        FileOutputStream fos = new FileOutputStream("podcasts/" + fileName);
-		        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-		        fos.close();
+			        FileOutputStream fos = new FileOutputStream(dirName +"/"+ fileName);
+			        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			        fos.close();
 			
-		 } catch (MalformedURLException mue) {
-	         mue.printStackTrace();
-	    } catch (IOException ioe) {
-	        ioe.printStackTrace();
-	    } 
+		 	} catch (MalformedURLException mue) {
+	        	 	mue.printStackTrace();
+	    		} catch (IOException ioe) {
+	        		ioe.printStackTrace();
+	    		} 
 	      
 		}
 	}
 }
-
